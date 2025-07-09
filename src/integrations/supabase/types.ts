@@ -14,7 +14,186 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      problems: {
+        Row: {
+          constraints: string | null
+          created_at: string
+          created_by: string | null
+          description: string
+          difficulty: Database["public"]["Enums"]["difficulty_level"]
+          id: string
+          input_format: string | null
+          is_approved: boolean | null
+          output_format: string | null
+          points: number | null
+          sample_input: string | null
+          sample_output: string | null
+          tags: string[] | null
+          test_cases: Json | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          constraints?: string | null
+          created_at?: string
+          created_by?: string | null
+          description: string
+          difficulty?: Database["public"]["Enums"]["difficulty_level"]
+          id?: string
+          input_format?: string | null
+          is_approved?: boolean | null
+          output_format?: string | null
+          points?: number | null
+          sample_input?: string | null
+          sample_output?: string | null
+          tags?: string[] | null
+          test_cases?: Json | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          constraints?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          difficulty?: Database["public"]["Enums"]["difficulty_level"]
+          id?: string
+          input_format?: string | null
+          is_approved?: boolean | null
+          output_format?: string | null
+          points?: number | null
+          sample_input?: string | null
+          sample_output?: string | null
+          tags?: string[] | null
+          test_cases?: Json | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          country: string | null
+          created_at: string
+          current_streak: number | null
+          display_name: string | null
+          id: string
+          last_activity: string | null
+          max_streak: number | null
+          problems_solved: number | null
+          total_score: number | null
+          updated_at: string
+          user_id: string
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          country?: string | null
+          created_at?: string
+          current_streak?: number | null
+          display_name?: string | null
+          id?: string
+          last_activity?: string | null
+          max_streak?: number | null
+          problems_solved?: number | null
+          total_score?: number | null
+          updated_at?: string
+          user_id: string
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          country?: string | null
+          created_at?: string
+          current_streak?: number | null
+          display_name?: string | null
+          id?: string
+          last_activity?: string | null
+          max_streak?: number | null
+          problems_solved?: number | null
+          total_score?: number | null
+          updated_at?: string
+          user_id?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
+      programming_languages: {
+        Row: {
+          created_at: string
+          id: string
+          judge0_id: number | null
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          judge0_id?: number | null
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          judge0_id?: number | null
+          name?: string
+        }
+        Relationships: []
+      }
+      submissions: {
+        Row: {
+          code: string
+          created_at: string
+          execution_time: number | null
+          id: string
+          language_id: string
+          memory_used: number | null
+          problem_id: string
+          score: number | null
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          execution_time?: number | null
+          id?: string
+          language_id: string
+          memory_used?: number | null
+          problem_id: string
+          score?: number | null
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          execution_time?: number | null
+          id?: string
+          language_id?: string
+          memory_used?: number | null
+          problem_id?: string
+          score?: number | null
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "submissions_language_id_fkey"
+            columns: ["language_id"]
+            isOneToOne: false
+            referencedRelation: "programming_languages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "submissions_problem_id_fkey"
+            columns: ["problem_id"]
+            isOneToOne: false
+            referencedRelation: "problems"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +202,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      difficulty_level: "Easy" | "Medium" | "Hard"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +329,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      difficulty_level: ["Easy", "Medium", "Hard"],
+    },
   },
 } as const

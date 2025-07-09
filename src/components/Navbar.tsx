@@ -8,12 +8,17 @@ import {
   BookOpen, 
   BarChart3,
   LogIn,
-  UserPlus
+  UserPlus,
+  LogOut
 } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
@@ -30,30 +35,40 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            <a href="#practice" className="text-foreground hover:text-primary transition-colors">
-              Practice
-            </a>
-            <a href="#leaderboard" className="text-foreground hover:text-primary transition-colors">
-              Leaderboard
-            </a>
-            <a href="#dashboard" className="text-foreground hover:text-primary transition-colors">
-              Dashboard
-            </a>
-            <a href="#about" className="text-foreground hover:text-primary transition-colors">
-              About
-            </a>
+            {user && (
+              <>
+                <button onClick={() => navigate('/dashboard')} className="text-foreground hover:text-primary transition-colors">
+                  Dashboard
+                </button>
+                <button onClick={() => navigate('/practice')} className="text-foreground hover:text-primary transition-colors">
+                  Practice
+                </button>
+                <button onClick={() => navigate('/leaderboard')} className="text-foreground hover:text-primary transition-colors">
+                  Leaderboard
+                </button>
+              </>
+            )}
           </div>
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-3">
-            <Button variant="ghost" size="sm">
-              <LogIn className="w-4 h-4 mr-2" />
-              Login
-            </Button>
-            <Button variant="default" size="sm">
-              <UserPlus className="w-4 h-4 mr-2" />
-              Sign Up
-            </Button>
+            {user ? (
+              <Button variant="ghost" size="sm" onClick={signOut}>
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
+            ) : (
+              <>
+                <Button variant="ghost" size="sm" onClick={() => navigate('/auth')}>
+                  <LogIn className="w-4 h-4 mr-2" />
+                  Login
+                </Button>
+                <Button variant="default" size="sm" onClick={() => navigate('/auth')}>
+                  <UserPlus className="w-4 h-4 mr-2" />
+                  Sign Up
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -71,31 +86,40 @@ const Navbar = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col space-y-3">
-              <a href="#practice" className="flex items-center text-foreground hover:text-primary transition-colors py-2">
-                <BookOpen className="w-4 h-4 mr-3" />
-                Practice
-              </a>
-              <a href="#leaderboard" className="flex items-center text-foreground hover:text-primary transition-colors py-2">
-                <Trophy className="w-4 h-4 mr-3" />
-                Leaderboard
-              </a>
-              <a href="#dashboard" className="flex items-center text-foreground hover:text-primary transition-colors py-2">
-                <BarChart3 className="w-4 h-4 mr-3" />
-                Dashboard
-              </a>
-              <a href="#about" className="flex items-center text-foreground hover:text-primary transition-colors py-2">
-                <User className="w-4 h-4 mr-3" />
-                About
-              </a>
+              {user && (
+                <>
+                  <button onClick={() => navigate('/dashboard')} className="flex items-center text-foreground hover:text-primary transition-colors py-2">
+                    <BarChart3 className="w-4 h-4 mr-3" />
+                    Dashboard
+                  </button>
+                  <button onClick={() => navigate('/practice')} className="flex items-center text-foreground hover:text-primary transition-colors py-2">
+                    <BookOpen className="w-4 h-4 mr-3" />
+                    Practice
+                  </button>
+                  <button onClick={() => navigate('/leaderboard')} className="flex items-center text-foreground hover:text-primary transition-colors py-2">
+                    <Trophy className="w-4 h-4 mr-3" />
+                    Leaderboard
+                  </button>
+                </>
+              )}
               <div className="flex flex-col space-y-2 pt-4 border-t border-border">
-                <Button variant="ghost" size="sm" className="justify-start">
-                  <LogIn className="w-4 h-4 mr-2" />
-                  Login
-                </Button>
-                <Button variant="default" size="sm" className="justify-start">
-                  <UserPlus className="w-4 h-4 mr-2" />
-                  Sign Up
-                </Button>
+                {user ? (
+                  <Button variant="ghost" size="sm" className="justify-start" onClick={signOut}>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </Button>
+                ) : (
+                  <>
+                    <Button variant="ghost" size="sm" className="justify-start" onClick={() => navigate('/auth')}>
+                      <LogIn className="w-4 h-4 mr-2" />
+                      Login
+                    </Button>
+                    <Button variant="default" size="sm" className="justify-start" onClick={() => navigate('/auth')}>
+                      <UserPlus className="w-4 h-4 mr-2" />
+                      Sign Up
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>

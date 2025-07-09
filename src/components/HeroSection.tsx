@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Code, Users, Trophy, Zap } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-coding.jpg";
 
 const HeroSection = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -38,10 +42,20 @@ const HeroSection = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">
-            <Button variant="hero" size="lg" className="text-lg px-8 py-6">
-              Start Coding Now
+            <Button 
+              variant="hero" 
+              size="lg" 
+              className="text-lg px-8 py-6"
+              onClick={() => user ? navigate('/practice') : navigate('/auth')}
+            >
+              {user ? 'Start Coding Now' : 'Get Started'}
             </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8 py-6">
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="text-lg px-8 py-6"
+              onClick={() => navigate('/practice')}
+            >
               View Challenges
             </Button>
           </div>
